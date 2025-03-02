@@ -1,25 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import theme from './styles/theme';
+import Layout from './components/layout/Layout';
+import Home from './components/sections/Home';
+
+// Lazy load other components
+const About = React.lazy(() => import('./components/sections/About'));
+const Portfolio = React.lazy(() => import('./components/sections/Portfolio'));
+const Contact = React.lazy(() => import('./components/sections/Contact'));
+const Pricing = React.lazy(() => import('./components/sections/Pricing'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Layout>
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/pricing" element={<Pricing />} />
+            </Routes>
+          </React.Suspense>
+        </Layout>
+      </Router>
+    </ThemeProvider>
   );
 }
 
